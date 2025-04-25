@@ -1,8 +1,8 @@
-name: CupidBot 24h Sync
+name: CupidBot 1H Sync
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *'  # Runs every hour
   workflow_dispatch:
 
 jobs:
@@ -10,12 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
       - name: Install dependencies
         run: npm install
+
       - name: Run CupidBot sync
         run: npm start
         env:
