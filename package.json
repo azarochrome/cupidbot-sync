@@ -1,6 +1,6 @@
 
 {
-  "name": "cupidbot-github-cron",
+  "name": "cupidbot-1h-sync",
   "version": "1.0.0",
   "type": "module",
   "scripts": {

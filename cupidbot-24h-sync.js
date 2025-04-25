@@ -5,7 +5,7 @@ import Airtable from 'airtable';
 const accessToken = process.env.CUPIDBOT_TOKEN;
 const airtableApiKey = process.env.AIRTABLE_API_KEY;
 const baseId = process.env.AIRTABLE_BASE_ID;
-const analyticsTable = "CupidBot 24h Stats";
+const analyticsTable = "Cupid 1H Sync";
 
 const base = new Airtable({ apiKey: airtableApiKey }).base(baseId);
 
@@ -21,8 +21,10 @@ async function fetchGlobalStats() {
 
 async function saveToAirtable(row) {
   const today = new Date().toISOString().split("T")[0];
+  const now = new Date().toISOString();
+
   const existing = await base(analyticsTable)
-    .select({ filterByFormula: `AND({Metric} = "${row.name}", {Date} = "${today}")`, maxRecords: 1 })
+    .select({ filterByFormula: `AND({Metric} = "${row.name}", DATETIME_FORMAT({Date}, 'YYYY-MM-DD') = "${today}")`, maxRecords: 1 })
     .firstPage();
 
   if (existing.length > 0) {
@@ -33,7 +35,7 @@ async function saveToAirtable(row) {
   await base(analyticsTable).create({
     "Metric": row.name,
     "Value": row.values[0],
-    "Date": today
+    "Date": now
   });
 }
 
