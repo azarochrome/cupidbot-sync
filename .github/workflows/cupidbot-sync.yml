@@ -1,9 +1,9 @@
-name: CupidBot 1H Sync
+name: CupidBot 1H Sync with Telegram
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour
-  workflow_dispatch:
+    - cron: '0 * * * *'  # ⏰ Every hour
+  workflow_dispatch:      # 🔘 Also lets you trigger it manually
 
 jobs:
   run-sync:
@@ -25,3 +25,5 @@ jobs:
           CUPIDBOT_TOKEN: ${{ secrets.CUPIDBOT_TOKEN }}
           AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
           AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
