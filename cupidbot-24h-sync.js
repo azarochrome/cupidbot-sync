@@ -33,17 +33,20 @@ async function saveToAirtable(row) {
       .firstPage();
 
     if (existing.length > 0) {
-      console.log(`⏱️ Skipping hourly duplicate for: ${row.name}`);
-      return;
+      const recordId = existing[0].id;
+      await base(analyticsTable).update(recordId, {
+        "Value": row.values[0],
+        "Date": now
+      });
+      console.log(`🔁 Updated Airtable record: ${row.name}`);
+    } else {
+      await base(analyticsTable).create({
+        "Metric": row.name,
+        "Value": row.values[0],
+        "Date": now
+      });
+      console.log(`✅ Created Airtable record: ${row.name}`);
     }
-
-    await base(analyticsTable).create({
-      "Metric": row.name,
-      "Value": row.values[0],
-      "Date": now
-    });
-
-    console.log(`✅ Created Airtable record: ${row.name}`);
   } catch (err) {
     console.error("❌ Airtable write error:", err);
     await notifyTelegram(`❌ Airtable write failed: ${err.message}`);
