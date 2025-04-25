@@ -1,0 +1,13 @@
+
+{
+  "name": "cupidbot-github-cron",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node cupidbot-24h-sync.js"
+  },
+  "dependencies": {
+    "airtable": "^0.11.6",
+    "node-fetch": "^3.3.2"
+  }
+}
