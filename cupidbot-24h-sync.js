@@ -23,15 +23,17 @@ async function fetchGlobalStats() {
 
 async function saveToAirtable(row) {
   try {
-    const today = new Date().toISOString().split("T")[0];
     const now = new Date();
 
     const existing = await base(analyticsTable)
-      .select({ filterByFormula: `AND({Metric} = "${row.name}", DATETIME_FORMAT({Date}, 'YYYY-MM-DD') = "${today}")`, maxRecords: 1 })
+      .select({ 
+        filterByFormula: `AND({Metric} = "${row.name}", IS_SAME({Date}, NOW(), 'hour'))`,
+        maxRecords: 1 
+      })
       .firstPage();
 
     if (existing.length > 0) {
-      console.log(`⚠️ Skipping duplicate for: ${row.name}`);
+      console.log(`⏱️ Skipping hourly duplicate for: ${row.name}`);
       return;
     }
 
@@ -40,6 +42,8 @@ async function saveToAirtable(row) {
       "Value": row.values[0],
       "Date": now
     });
+
+    console.log(`✅ Created Airtable record: ${row.name}`);
   } catch (err) {
     console.error("❌ Airtable write error:", err);
     await notifyTelegram(`❌ Airtable write failed: ${err.message}`);
