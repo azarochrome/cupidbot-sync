@@ -1,6 +1,6 @@
 
 {
-  "name": "cupidbot-1h-sync",
+  "name": "cupidbot-github-telegram",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
